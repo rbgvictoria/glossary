@@ -1,11 +1,13 @@
 <template>
   <div id="glossary-terms">
     <div id="glossary-first-letter">
-        <a v-for="letter in alpha" :class="letter === firstLetter ? 'active' : false">
-          <span class="letter" @click="onClick(letter)">{{ letter.toUpperCase() }}</span>
-        </a>
+        <router-link
+            v-for="letter in alpha" :key="letter"
+            :class="letter === firstLetter ? 'active' : false"
+            :to="{ name: 'home', hash: '#' + letter }"
+        >{{ letter.toUpperCase() }}</router-link>
     </div>
-    <glossary-term-list :firstLetter="firstLetter" @term-clicked="onTermClicked"></glossary-term-list>
+    <glossary-term-list></glossary-term-list>
   </div>
 </template>
 
@@ -30,12 +32,18 @@ export default {
       }
       return alpha
     },
-    onClick(letter) {
-      console.log(letter)
-      this.firstLetter = letter
-    },
     onTermClicked(term) {
       this.$emit('term-selected', term.value)
+    }
+  },
+  mounted() {
+    if (this.$route.hash) {
+      this.firstLetter = this.$route.hash.substr(1, 1)
+    }
+  },
+  watch: {
+    '$route.hash': function() {
+      this.firstLetter = this.$route.hash.substr(1, 1)
     }
   }
 }

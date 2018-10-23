@@ -10,7 +10,7 @@
           <span class="glossary-rel-type">{{ rel.relationshipType.label }}</span>
         </div>
         <div class="col-xs-6 col-md-4 text-right">
-          <a href="#adaxial" class="glossary-link">{{ rel.relatedTerm.name }}</a>
+          <router-link :to="{ name: 'home', hash: '#' + rel.relatedTerm.name }">{{ rel.relatedTerm.name }}</router-link>
         </div>
       </div>
     </div>
@@ -33,11 +33,26 @@ export default {
           .then(response => {
             this.termData = response.data
           })
+    },
+    findTerm() {
+      axios.get('/api/search', {params: {
+          'term': this.$route.hash.substr(1),
+          'include': 'relationships'
+        }
+      }).then(
+        response => {
+          if (response.data && response.data.data.length) {
+            this.termData = response.data.data[0]
+          }
+        }
+      )
     }
   },
   watch: {
-    term: function() {
-      this.getTerm()
+    '$route.hash': function() {
+      if (this.$route.hash.length > 2) {
+        this.findTerm()
+      }
     }
   }
 }

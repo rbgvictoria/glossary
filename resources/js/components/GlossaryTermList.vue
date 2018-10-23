@@ -1,11 +1,9 @@
 <template>
 <div id="term-list">
   <ul>
-    <li v-for="term in terms">
+    <li v-for="term in terms" :class="term.label === activeTerm ? 'active' : false">
       <i class="fa fa-caret-right"></i>
-      <a :href="'#' + term.label" :data-value="term.value" @click.prevent="onClick(term)">
-        {{ term.label }}
-      </a>
+      <router-link :to="{ name: 'home', hash: '#' + term.label }">{{ term.label }}</router-link>
     </li>
   </ul>
 </div>
@@ -16,12 +14,11 @@
 import axios from 'axios'
 
 export default {
-  props: [
-    'firstLetter'
-  ],
   data() {
     return {
-      terms: []
+      firstLetter: false,
+      terms: [],
+      activeTerm: false
     }
   },
   methods: {
@@ -32,8 +29,11 @@ export default {
         }
       }).then(response => {
         this.terms = response.data
-        if (this.terms) {
-          this.onClick(this.terms[0])
+        if (typeof this.$route.hash === 'undefined' || this.$route.hash.length < 3) {
+          this.$router.push({ name: 'home', hash: '#' + this.terms[0].label})
+        }
+        else {
+          this.activeTerm = this.$route.hash.substr(1)
         }
       })
     },
@@ -42,10 +42,17 @@ export default {
     }
   },
   mounted() {
+    if (this.$route.hash) {
+      this.firstLetter = this.$route.hash.substr(1, 1)
+    }
+    else {
+      this.firstLetter = 'a'
+    }
     this.getTerms()
   },
   watch: {
-    firstLetter: function() {
+    '$route.hash': function() {
+      this.firstLetter = this.$route.hash.substr(1, 1)
       this.getTerms()
     }
   }
