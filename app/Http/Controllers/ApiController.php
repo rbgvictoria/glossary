@@ -37,4 +37,9 @@ class ApiController extends Controller
         $swagger = \Swagger\scan(app_path());
         return response()->json($swagger);
     }
+    
+    public function options()
+    {
+        return response()->json('OK');
+    }
 }

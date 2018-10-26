@@ -1,9 +1,9 @@
 <template>
 <div id="term-list">
   <ul>
-    <li v-for="term in terms" :class="term.label === activeTerm ? 'active' : false">
+    <li v-for="term in terms" :class="term.value === activeTerm.value ? 'active' : false">
       <i class="fa fa-caret-right"></i>
-      <router-link :to="{ name: 'home', hash: '#' + term.label }">{{ term.label }}</router-link>
+      <router-link :to="{ name: 'glossary', hash: '#' + encodeURIComponent(term.label) }">{{ term.label }}</router-link>
     </li>
   </ul>
 </div>
@@ -14,6 +14,7 @@
 import axios from 'axios'
 
 export default {
+  props: ['glossary'],
   data() {
     return {
       firstLetter: false,
@@ -23,22 +24,25 @@ export default {
   },
   methods: {
     getTerms() {
-      axios.get('/api/autocomplete', {
+      axios({
+        url: `${process.env.MIX_GLOSSARY_URL}/autocomplete`,
+        method: 'get',
         params: {
+          glossary: this.glossary,
           term: this.firstLetter
         }
       }).then(response => {
         this.terms = response.data
         if (typeof this.$route.hash === 'undefined' || this.$route.hash.length < 3) {
-          this.$router.push({ name: 'home', hash: '#' + this.terms[0].label})
+          this.activeTerm = this.terms[0]
         }
         else {
-          this.activeTerm = this.$route.hash.substr(1)
+          let filtered = this.terms.filter(term => term.label === decodeURIComponent(this.$route.hash.substr(1)))
+          if (filtered.length) {
+            this.activeTerm = filtered[0]
+          }
         }
       })
-    },
-    onClick(term) {
-      this.$emit('term-clicked', term)
     }
   },
   mounted() {
@@ -54,6 +58,9 @@ export default {
     '$route.hash': function() {
       this.firstLetter = this.$route.hash.substr(1, 1)
       this.getTerms()
+    },
+    activeTerm: function() {
+      this.$emit('term-selected', this.activeTerm)
     }
   }
 }

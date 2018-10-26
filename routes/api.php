@@ -17,6 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::options('/', 'ApiController@options');
+Route::options('/glossaries', 'ApiController@options');
+Route::options('/terms', 'ApiController@options');
+Route::options('/search', 'ApiController@options');
+Route::options('/autocomplete', 'ApiController@options');
+
 Route::get('/', function() {
     return view('swagger');
 });

@@ -21,6 +21,7 @@ class Cors
         return $next($request)
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, '
-                    . 'PATCH, OPTIONS');
+                    . 'PATCH, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'x-csrf-token, x-requested-with');
     }
 }

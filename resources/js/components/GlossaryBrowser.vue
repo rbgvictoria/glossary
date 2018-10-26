@@ -4,10 +4,10 @@
         <router-link
             v-for="letter in alpha" :key="letter"
             :class="letter === firstLetter ? 'active' : false"
-            :to="{ name: 'home', hash: '#' + letter }"
+            :to="{ name: 'glossary', hash: '#' + letter }"
         >{{ letter.toUpperCase() }}</router-link>
     </div>
-    <glossary-term-list></glossary-term-list>
+    <glossary-term-list :glossary="glossary" @term-selected="onTermSelected"></glossary-term-list>
   </div>
 </template>
 
@@ -18,6 +18,7 @@ export default {
   components: {
     GlossaryTermList
   },
+  props: ['glossary'],
   data() {
     return {
       alpha: this.generateAlphaArray(),
@@ -32,8 +33,8 @@ export default {
       }
       return alpha
     },
-    onTermClicked(term) {
-      this.$emit('term-selected', term.value)
+    onTermSelected(term) {
+      this.$emit('term-selected', term)
     }
   },
   mounted() {

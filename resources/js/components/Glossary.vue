@@ -8,11 +8,11 @@
 
 
           <div class="col-sm-4 col-md-3">
-            <glossary-browser @term-selected="onTermSelected"></glossary-browser>
+            <glossary-browser :glossary="glossary" @term-selected="onTermSelected"></glossary-browser>
           </div>
 
           <div class="col-sm-8 col-md-9">
-              <glossary-term :term="selectedTerm"></glossary-term>
+              <glossary-term :glossary="glossary" :term="activeTerm"></glossary-term>
           </div>
       </div>
   </div> <!-- /.container -->
@@ -30,12 +30,13 @@ export default {
   },
   data() {
     return {
-      selectedTerm: null
+      glossary: 4,
+      activeTerm: false
     }
   },
   methods: {
     onTermSelected(term) {
-      this.selectedTerm = term
+      this.activeTerm = term
     }
   }
 }
