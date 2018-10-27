@@ -58,7 +58,13 @@ class TermImage extends ClassBase {
      * @ORM\Column(length=64, nullable=true)
      * @var string
      */
-    protected $license;
+    protected $licenseUrl;
+    
+    /**
+     * @ORM\Column(length=64, nullable=true)
+     * @var string
+     */
+    protected $licenseLogoUrl;
     
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -126,7 +132,7 @@ class TermImage extends ClassBase {
      */
     public function getRights()
     {
-        return $this->right;
+        return $this->rights;
     }
     
     /**
@@ -142,18 +148,36 @@ class TermImage extends ClassBase {
      * 
      * @return string
      */
-    public function getLicense()
+    public function getLicenseUrl()
     {
-        return $this->license;
+        return $this->licenseUrl;
     }
     
     /**
      * 
-     * @param string $license
+     * @param string $url
      */
-    public function setLicense($license)
+    public function setLicenseUrl($url)
     {
-        $this->license = $license;
+        $this->licenseUrl = $url;
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getLicenseLogoUrl()
+    {
+        return $this->licenseLogoUrl;
+    }
+    
+    /**
+     * 
+     * @param string $url
+     */
+    public function setLicenseLogoUrl($url)
+    {
+        $this->licenseLogoUrl = $url;
     }
     
     /**

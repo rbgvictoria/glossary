@@ -14,11 +14,18 @@
         </div>
       </div>
     </div>
+    <glossary-term-image v-if="termData.images && termData.images.data.length" :images=termData.images.data></glossary-term-image>
   </div>
 </template>
 
 <script>
+
+import GlossaryTermImage from './GlossaryTermImage'
+
 export default {
+  components: {
+    GlossaryTermImage
+  },
   props: [
     'glossary',
     'term'
@@ -33,41 +40,48 @@ export default {
       if (this.term) {
         axios.get(`${process.env.MIX_GLOSSARY_URL}/terms/${this.term.value}`, {
           params: {
-            include: 'relationships'
+            include: 'relationships,images'
           }
         }).then(response => {
           this.termData = response.data
+          if (this.termData.images && this.termData.images.data.length) {
+            this.termData.images.data = this.termData.images.data.map(
+              (img) => {
+                return {
+                  id: img.id,
+                  url: img.url,
+                  caption: this.makeCaption(img)
+                }
+              }
+            )
+          }
         })
       }
       else {
         this.termData = {}
       }
     },
-    findTerm() {
-      axios.get(`${process.env.MIX_GLOSSARY_URL}/search`, {
-        params: {
-          glossary: this.glossary,
-          term: this.$route.hash.substr(1),
-          include: 'relationships'
-        }
-      }).then(
-        response => {
-          if (response.data && response.data.data.length) {
-            this.termData = response.data.data[0]
-          }
-        }
-      )
+    makeCaption(img) {
+      let caption = [];
+      if (img.caption) {
+        caption.push(img.caption + ' hello... ')
+      }
+      if (img.creator) {
+        caption.push(img.creator + '.')
+      }
+      if (img.rights) {
+        caption.push(img.rights + '.')
+      }
+      if (img.licenseUrl) {
+        caption.push(`<a href="${ img.licenseUrl }"><img src="${ img.licenseLogoUrl }" alt="" class="license-logo"/></a>`)
+      }
+      return caption.join(' ')
     }
   },
   mounted() {
     this.getTerm()
   },
   watch: {
-    '$route.hash': function() {
-      if (this.$route.hash.length > 2) {
-        this.findTerm()
-      }
-    },
     term: function() {
       this.getTerm()
     }

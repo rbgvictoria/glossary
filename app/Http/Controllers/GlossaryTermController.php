@@ -49,7 +49,7 @@ class GlossaryTermController extends Controller
      */
     public function show($id)
     {
-        $this->fractal->parseIncludes('relationships');
+        $this->fractal->parseIncludes('relationships,images');
         $term = $this->em->getRepository('\App\Entities\Term')->find($id);
         $resource = new Fractal\Resource\Item($term, 
                 new \App\Transformers\GlossaryTermTransformer, 'terms');

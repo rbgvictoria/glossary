@@ -64,10 +64,10 @@ class Term extends \App\Entities\Term implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'name', 'definition', 'scope', 'isDiscouraged', 'localId', 'language', 'nameAddendum', 'glossary', 'category', 'limitations', 'relationships', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+            return ['__isInitialized__', 'name', 'definition', 'scope', 'isDiscouraged', 'localId', 'language', 'nameAddendum', 'glossary', 'category', 'limitations', 'relationships', 'images', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
         }
 
-        return ['__isInitialized__', 'name', 'definition', 'scope', 'isDiscouraged', 'localId', 'language', 'nameAddendum', 'glossary', 'category', 'limitations', 'relationships', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+        return ['__isInitialized__', 'name', 'definition', 'scope', 'isDiscouraged', 'localId', 'language', 'nameAddendum', 'glossary', 'category', 'limitations', 'relationships', 'images', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
     }
 
     /**
@@ -413,6 +413,28 @@ class Term extends \App\Entities\Term implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'addRelationship', [$relationship]);
 
         return parent::addRelationship($relationship);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getImages()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getImages', []);
+
+        return parent::getImages();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addImage(\App\Entities\TermImage $image)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addImage', [$image]);
+
+        return parent::addImage($image);
     }
 
     /**

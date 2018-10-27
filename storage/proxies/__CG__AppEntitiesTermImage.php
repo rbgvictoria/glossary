@@ -64,10 +64,10 @@ class TermImage extends \App\Entities\TermImage implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'term', 'imageUrl', 'creator', 'rights', 'license', 'caption', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+            return ['__isInitialized__', 'term', 'imageUrl', 'creator', 'rights', 'licenseUrl', 'licenseLogoUrl', 'caption', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
         }
 
-        return ['__isInitialized__', 'term', 'imageUrl', 'creator', 'rights', 'license', 'caption', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
+        return ['__isInitialized__', 'term', 'imageUrl', 'creator', 'rights', 'licenseUrl', 'licenseLogoUrl', 'caption', 'id', 'guid', 'version', 'createdBy', 'modifiedBy', 'timestampCreated', 'timestampModified'];
     }
 
     /**
@@ -264,23 +264,45 @@ class TermImage extends \App\Entities\TermImage implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function getLicense()
+    public function getLicenseUrl()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLicense', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLicenseUrl', []);
 
-        return parent::getLicense();
+        return parent::getLicenseUrl();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setLicense($license)
+    public function setLicenseUrl($url)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLicense', [$license]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLicenseUrl', [$url]);
 
-        return parent::setLicense($license);
+        return parent::setLicenseUrl($url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLicenseLogoUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLicenseLogoUrl', []);
+
+        return parent::getLicenseLogoUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLicenseLogoUrl($url)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLicenseLogoUrl', [$url]);
+
+        return parent::setLicenseLogoUrl($url);
     }
 
     /**

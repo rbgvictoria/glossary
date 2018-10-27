@@ -104,6 +104,12 @@ class Term extends ClassBase {
     protected $relationships;
     
     /**
+     * @ORM\OneToMany(targetEntity="TermImage", mappedBy="term")
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    protected $images;
+    
+    /**
      * 
      */
     public function __construct() {
@@ -308,5 +314,23 @@ class Term extends ClassBase {
     public function addRelationship($relationship)
     {
         $this->relationships[] = $relationship;
+    }
+    
+    /**
+     * 
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+    
+    /**
+     * 
+     * @param \App\Entities\TermImage $image
+     */
+    public function addImage(\App\Entities\TermImage $image)
+    {
+        $this->images[] = $image;
     }
 }

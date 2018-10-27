@@ -41,7 +41,8 @@ class GlossaryTermTransformer extends OrmTransformer {
     protected $availableIncludes = [
         'relationships',
         'category',
-        'limitations'
+        'limitations',
+        'images'
     ];
 
     /**
@@ -146,5 +147,27 @@ class GlossaryTermTransformer extends OrmTransformer {
     {
         return new Fractal\Resource\Collection($term->getLimitations(), 
                 new LimitationTransformer, 'limitations');
+    }
+    
+    
+    /**
+     * @SWG\Property(
+     *   property="images",
+     *   type="array",
+     *   @SWG\Items(
+     *     ref="#definitions/TermImage"
+     *   )
+     * )
+     * 
+     * @param \App\Entities\Term $term
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeImages(\App\Entities\Term $term)
+    {
+        $images = $term->getImages();
+        if ($images) {
+            return new Fractal\Resource\Collection($images, 
+                    new TermImageTransformer, 'images');
+        }
     }
 }
